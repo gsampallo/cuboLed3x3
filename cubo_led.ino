@@ -24,6 +24,7 @@ void setup() {
 
 void loop() { 
   
+  //iluminar secuencialmente cada uno
   apagar();
   for(int i=0;i<3;i++) {
     for(int j=0;j<3;j++) {
@@ -101,6 +102,7 @@ void loop() {
   iluminarColumna(3);  
   delay(200);
 
+  //flecha por cada piso
   apagar();
   for(int i=0;i<3;i++) { //nivel
     encender(i,0,0);
@@ -121,6 +123,7 @@ void loop() {
    
   }
 
+  //circulo de columnas
   int circuloColumnas[8] = { 8,5,2,4,3,6,9,10};
   for(int h=0;h<2;h++) {
     for(int i=0;i<8;i++) { //columnas
@@ -129,12 +132,46 @@ void loop() {
       delay(200);
     }
   }
-  
+
+  //persecucion
   for(int i=0;i<3;i++) {
     perseguir(i);
   }
+
+  //iluminar cada piso hacia arriba
+  for(int i=0;i<3;i++) {
+    apagar();
+    piso(i);
+    delay(200);
+  }
+
+  //iluminar cada piso hacia abajo
+  for(int i=2;i>=0;i--) {
+    piso(i);
+    delay(200);
+    apagar();
+  }  
   
 
+  //persecucionFill hacia arriba
+  for(int q=0;q<3;q++) {
+    for(int i=0;i<3;i++) {
+      perseguirFill(i,true);
+    }
+
+    for(int i=2;i>=0;i--) {
+      perseguirFill(i,false);
+    }
+  }
+
+}
+
+void piso(int nivel) {
+    for(int i=0;i<3;i++) {
+      for(int j=0;j<3;j++) {
+        encender(nivel,i,j);
+      }
+    }
 }
 
 void recorrido(int nivel) {
@@ -171,11 +208,53 @@ void perseguir(int nivel) {
    apagar();
    encender(nivel,recorrer[h][1],recorrer[h][0]);
    encender(nivel,recorrer[h][3],recorrer[h][2]);
-   
+
    delay(200);
   }   
 }
 
+void perseguirFill(int nivel,boolean sentido) {
+  int recorrer[][4] = {
+    {0,0,2,2},
+    {0,1,2,1},
+    {0,2,2,0},
+    {1,2,1,0},
+    {2,2,0,0},
+    {2,1,0,1},
+    {2,0,0,2},
+    {1,0,1,2}
+  };  
+  if(sentido) {
+    for(int h=0;h<8;h++) {
+     apagar();
+     encender(nivel,recorrer[h][1],recorrer[h][0]);
+     encender(nivel,recorrer[h][3],recorrer[h][2]);
+  
+     for(int i=nivel;i>=0;i--) {
+       encender(i-1,recorrer[h][1],recorrer[h][0]);
+       encender(i-1,recorrer[h][3],recorrer[h][2]);    
+     }
+  
+     delay(200);
+    }   
+  } else {
+
+    for(int h=7;h>=0;h--) {
+     
+     encender(nivel,recorrer[h][1],recorrer[h][0]);
+     encender(nivel,recorrer[h][3],recorrer[h][2]);
+  
+     for(int i=nivel;i<3;i++) {
+       encender(i-1,recorrer[h][1],recorrer[h][0]);
+       encender(i-1,recorrer[h][3],recorrer[h][2]);    
+     }
+  
+     delay(200);
+     apagar();
+    } 
+    
+  }
+}
 
 void iluminarCara(int cara,boolean frente) {
   for(int i=0;i<3;i++) {
