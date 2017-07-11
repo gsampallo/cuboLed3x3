@@ -71,7 +71,6 @@ void loop() {
     }
   } 
 
-
   for(int i=0;i<3;i++) {
     apagar();
     iluminarCara(i,true);
@@ -131,10 +130,52 @@ void loop() {
     }
   }
   
-
+  for(int i=0;i<3;i++) {
+    perseguir(i);
+  }
   
 
 }
+
+void recorrido(int nivel) {
+  int recorrer[][2] = {
+    {0,0},
+    {0,1},
+    {0,2},
+    {1,2},
+    {2,2},
+    {2,1},
+    {2,0},
+    {1,0}
+  };  
+  for(int h=0;h<8;h++) {
+   apagar();
+   encender(nivel,recorrer[h][1],recorrer[h][0]);
+   
+   delay(200);
+  }   
+}
+
+void perseguir(int nivel) {
+  int recorrer[][4] = {
+    {0,0,2,2},
+    {0,1,2,1},
+    {0,2,2,0},
+    {1,2,1,0},
+    {2,2,0,0},
+    {2,1,0,1},
+    {2,0,0,2},
+    {1,0,1,2}
+  };  
+  for(int h=0;h<8;h++) {
+   apagar();
+   encender(nivel,recorrer[h][1],recorrer[h][0]);
+   encender(nivel,recorrer[h][3],recorrer[h][2]);
+   
+   delay(200);
+  }   
+}
+
 
 void iluminarCara(int cara,boolean frente) {
   for(int i=0;i<3;i++) {
